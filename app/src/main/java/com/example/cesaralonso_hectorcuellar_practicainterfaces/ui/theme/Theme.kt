@@ -1,7 +1,9 @@
 package com.example.cesaralonso_hectorcuellar_practicainterfaces.ui.theme
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 
 private val LightColors = lightColorScheme(
     primary = Primary,
@@ -20,6 +22,13 @@ fun CesarAlonso_HectorCuellar_PracticaInterfacesTheme(
     MaterialTheme(
         colorScheme = LightColors,
         typography = Typography,
+        shapes = Shapes(
+            extraSmall = RoundedCornerShape(10.dp),
+            small = RoundedCornerShape(14.dp),
+            medium = RoundedCornerShape(18.dp),
+            large = RoundedCornerShape(22.dp),
+            extraLarge = RoundedCornerShape(28.dp)
+        ),
         content = content
     )
 }
