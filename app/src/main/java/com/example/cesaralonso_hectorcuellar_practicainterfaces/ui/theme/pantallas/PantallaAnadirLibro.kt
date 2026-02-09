@@ -11,14 +11,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+// Pantalla para añadir un libro nuevo.
+// Tiene un TextField para el título y botones Guardar / Cancelar.
+// No toca la lógica global, solo devuelve el título al onGuardar.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAnadirLibro(
     onGuardar: (String) -> Unit,
     onCancelar: () -> Unit
 ) {
+    // Estado del texto (lo que va escribiendo el usuario)
     var titulo by remember { mutableStateOf("") }
 
+    // Fondo con imagen para que quede más pro
     FondoImagen {
         Scaffold(
             containerColor = androidx.compose.ui.graphics.Color.Transparent,
@@ -36,6 +41,7 @@ fun PantallaAnadirLibro(
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
 
+                // Card donde meto el formulario para que quede más bonito
                 ElevatedCard(
                     colors = CardDefaults.elevatedCardColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
@@ -46,6 +52,7 @@ fun PantallaAnadirLibro(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            // Icono decorativo
                             Icon(
                                 imageVector = Icons.Default.MenuBook,
                                 contentDescription = null
@@ -57,6 +64,7 @@ fun PantallaAnadirLibro(
                             )
                         }
 
+                        // Campo de texto para el título
                         OutlinedTextField(
                             value = titulo,
                             onValueChange = { titulo = it },
@@ -69,6 +77,7 @@ fun PantallaAnadirLibro(
                     }
                 }
 
+                // Botón Guardar: recorta espacios y si no está vacío, lo manda al onGuardar
                 Button(
                     onClick = {
                         val limpio = titulo.trim()
@@ -79,6 +88,7 @@ fun PantallaAnadirLibro(
                     Text("Guardar")
                 }
 
+                // Botón Cancelar: vuelve atrás
                 OutlinedButton(
                     onClick = onCancelar,
                     modifier = Modifier.fillMaxWidth()

@@ -9,10 +9,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.cesaralonso_hectorcuellar_practicainterfaces.R
 
+// Este composable pone una imagen de fondo en toda la pantalla
+// y encima una capa oscura para que se lea bien el texto.
 @Composable
 fun FondoImagen(content: @Composable () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
 
+        // Imagen a pantalla completa
         Image(
             painter = painterResource(R.drawable.fondo_libros),
             contentDescription = null,
@@ -20,13 +23,14 @@ fun FondoImagen(content: @Composable () -> Unit) {
             contentScale = ContentScale.Crop
         )
 
-        // Oscurecer un poco para que el texto se lea mejor
+        // Capa oscura para contraste (si no, no se lee bien)
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.35f))
         )
 
+        // Contenido de la pantalla por encima
         content()
     }
 }

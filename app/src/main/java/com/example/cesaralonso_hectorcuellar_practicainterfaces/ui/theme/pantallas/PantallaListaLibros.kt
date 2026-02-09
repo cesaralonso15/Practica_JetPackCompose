@@ -17,8 +17,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cesaralonso_hectorcuellar_practicainterfaces.model.Libro
 
+// Enum para el filtro de la lista:
+// - TODOS: enseña todo
+// - LEIDOS: solo leídos
+// - POR_LEER: solo pendientes
 enum class FiltroLibros { TODOS, LEIDOS, POR_LEER }
 
+// Pantalla principal donde se ve la lista de libros.
+// Aquí se pinta:
+// - TopBar
+// - Resumen (pendientes/leídos/total)
+// - Filtro
+// - Lista de libros con checkbox + borrar
+// - FAB para ir a añadir
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaListaLibros(
@@ -30,9 +41,11 @@ fun PantallaListaLibros(
     pendientes: Int,
     onIrAAnadir: () -> Unit
 ) {
+    // Cálculo de leídos y total (se recalcula cuando cambia libros)
     val leidos = remember(libros) { libros.count { it.leido } }
     val total = libros.size
 
+    // Lista filtrada según el filtro seleccionado
     val librosFiltrados = remember(libros, filtro) {
         when (filtro) {
             FiltroLibros.TODOS -> libros
@@ -41,6 +54,7 @@ fun PantallaListaLibros(
         }
     }
 
+    // Fondo con imagen
     FondoImagen {
         Scaffold(
             containerColor = androidx.compose.ui.graphics.Color.Transparent,
@@ -66,6 +80,7 @@ fun PantallaListaLibros(
                 )
             },
             floatingActionButton = {
+                // Botón flotante para ir a añadir un libro
                 FloatingActionButton(onClick = onIrAAnadir) {
                     Icon(Icons.Default.Add, contentDescription = "Añadir libro")
                 }
@@ -80,6 +95,7 @@ fun PantallaListaLibros(
 
                 Spacer(Modifier.height(8.dp))
 
+                // Resumen de contadores
                 HeaderResumen(
                     pendientes = pendientes,
                     leidos = leidos,
@@ -88,7 +104,7 @@ fun PantallaListaLibros(
 
                 Spacer(Modifier.height(14.dp))
 
-                // “Segmented buttons” para filtro (más pro que chips sueltos)
+                // Botones segmentados para filtrar (queda más pro)
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     SegmentedButton(
                         selected = filtro == FiltroLibros.TODOS,
@@ -111,6 +127,7 @@ fun PantallaListaLibros(
 
                 Spacer(Modifier.height(10.dp))
 
+                // Si la lista filtrada está vacía, muestro mensaje (empty state)
                 if (librosFiltrados.isEmpty()) {
                     val msg = when (filtro) {
                         FiltroLibros.TODOS -> "Aún no has añadido libros."
@@ -122,6 +139,7 @@ fun PantallaListaLibros(
                         subtitle = msg
                     )
                 } else {
+                    // Lista de libros con separación entre tarjetas
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(bottom = 88.dp),
@@ -140,6 +158,7 @@ fun PantallaListaLibros(
                                         .padding(14.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
+                                    // Columna con título y chip de estado
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
                                             text = libro.titulo,
@@ -151,11 +170,13 @@ fun PantallaListaLibros(
 
                                     Spacer(Modifier.width(8.dp))
 
+                                    // Checkbox para marcar leído/no leído
                                     Checkbox(
                                         checked = libro.leido,
                                         onCheckedChange = { onToggleLeido(libro) }
                                     )
 
+                                    // Botón para pedir eliminar (abre el diálogo en Main)
                                     IconButton(onClick = { onSolicitarEliminar(libro) }) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,

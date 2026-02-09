@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+// Cabecera/resumen con tarjetas: pendientes, leídos y total.
+// Esto lo saco arriba para que se vea claro el estado de la biblioteca.
 @Composable
 fun HeaderResumen(
     pendientes: Int,
@@ -22,6 +24,7 @@ fun HeaderResumen(
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.elevatedCardColors(
+            // Un pelín transparente para que se integre con el fondo
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
         )
     ) {
@@ -31,6 +34,8 @@ fun HeaderResumen(
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(Modifier.height(10.dp))
+
+            // Fila con 3 mini-resúmenes
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -43,6 +48,7 @@ fun HeaderResumen(
     }
 }
 
+// Item pequeño del resumen: número grande + texto pequeño
 @Composable
 private fun ResumenItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -55,12 +61,15 @@ private fun ResumenItem(label: String, value: String) {
     }
 }
 
+// Chip de estado para cada libro.
+// Si está leído -> "Leído" con icono Book
+// Si no -> "Por leer" con icono MenuBook
 @Composable
 fun StatusChip(leido: Boolean, modifier: Modifier = Modifier) {
     val text = if (leido) "Leído" else "Por leer"
     AssistChip(
-        onClick = { },
-        enabled = false,
+        onClick = { },       // No hace nada, es solo visual
+        enabled = false,     // Lo desactivo para que sea “etiqueta”
         label = { Text(text) },
         leadingIcon = {
             Icon(
@@ -72,6 +81,7 @@ fun StatusChip(leido: Boolean, modifier: Modifier = Modifier) {
     )
 }
 
+// Estado vacío (cuando no hay libros o el filtro deja la lista vacía).
 @Composable
 fun EmptyState(
     title: String,
@@ -85,7 +95,7 @@ fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = Icons.Default.Menu,
+            imageVector = Icons.Default.Menu, // icono genérico para el empty
             contentDescription = null,
             modifier = Modifier.size(56.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
